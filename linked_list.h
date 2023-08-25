@@ -7,6 +7,7 @@ template <class T>
 class linked_list {
 public: 
     linked_list();
+    ~linked_list();
 
     void insert_node(const T&);
     void delete_node(int);
@@ -34,6 +35,19 @@ template <class T>
 linked_list <T>::linked_list() 
     : m_start{nullptr}
 {}
+
+template <class T>
+linked_list <T>::~linked_list() {
+    if (m_start != nullptr) {
+        node* tmp = m_start;
+
+        while (tmp->m_next == nullptr) {
+            tmp = tmp->m_next;
+            delete tmp->m_prev;
+        }
+        delete tmp;
+    }
+}
 
 template <class T>
 void linked_list <T>::insert_node(const T& data) {
@@ -122,4 +136,5 @@ bool linked_list <T>::search(const T& data) const {
     }
     return false;
 }
+
 
