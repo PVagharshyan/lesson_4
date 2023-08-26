@@ -24,6 +24,7 @@ private:
         node(int);
     };
     node* m_start;
+    size_t m_size;
 };
 
 template <class T>
@@ -33,7 +34,7 @@ linked_list <T>::node::node(int data)
 
 template <class T>
 linked_list <T>::linked_list() 
-    : m_start{nullptr}
+    : m_start{ nullptr }, m_size{ 0 }
 {}
 
 template <class T>
@@ -41,7 +42,7 @@ linked_list <T>::~linked_list() {
     if (m_start != nullptr) {
         node* tmp = m_start;
 
-        while (tmp->m_next == nullptr) {
+        while (tmp->m_next != nullptr) {
             tmp = tmp->m_next;
             delete tmp->m_prev;
         }
@@ -55,6 +56,7 @@ void linked_list <T>::insert_node(const T& data) {
    
     if (m_start == nullptr) {
         m_start = created_node;
+        ++m_size;
         return;
     }
 
@@ -65,6 +67,7 @@ void linked_list <T>::insert_node(const T& data) {
     
     created_node->m_prev = tmp;
     tmp->m_next = created_node;
+    ++m_size;
 }
 
 template <class T>
@@ -76,7 +79,6 @@ void linked_list <T>::delete_node(int index) {
         throw std::runtime_error("Error: list is empty");
     }
     node* tmp = m_start;
-    bool flag = false;
     int i = 0;
     while (i != index && tmp->m_next != nullptr) {
         tmp = tmp->m_next;
@@ -102,6 +104,7 @@ void linked_list <T>::delete_node(int index) {
         m_start = nullptr;
     }
     delete tmp;
+    --m_size;
 }
 
 template <class T>
@@ -114,6 +117,7 @@ void linked_list <T>::print() const {
     }
 
     int i = 0;
+    std::cout << "size: " << m_size << std::endl;
     while (tmp->m_next != nullptr) {
         std::cout << "index: " << i << ", data: " << tmp->m_data << std::endl;
         tmp = tmp->m_next;    
