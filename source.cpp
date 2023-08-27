@@ -13,7 +13,9 @@ int main() {
     list.push_back(13);
     list.push_back(15);
     list.print();
+    list.print_reverse();
     list.insert(1, 25);
     list.print();
+    list_1.print_reverse();
     return 0;
 }

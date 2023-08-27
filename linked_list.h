@@ -16,6 +16,7 @@ public:
     int get(int) const;
     void delete_node(int);
     void print() const;
+    void print_reverse() const;
     bool search(const T&) const;
 
 private:
@@ -28,6 +29,7 @@ private:
         node(int);
     };
     node* m_start;
+    node* m_end;
     size_t m_size;
 };
 
@@ -38,7 +40,7 @@ linked_list <T>::node::node(int data)
 
 template <class T>
 linked_list <T>::linked_list() 
-    : m_start{ nullptr }, m_size{ 0 }
+    : m_start{ nullptr }, m_end{ nullptr }, m_size{ 0 }
 {}
 
 template <class T>
@@ -60,6 +62,7 @@ void linked_list <T>::push_back(const T& data) {
    
     if (m_start == nullptr) {
         m_start = created_node;
+        m_end = created_node;
         ++m_size;
         return;
     }
@@ -71,6 +74,7 @@ void linked_list <T>::push_back(const T& data) {
     
     created_node->m_prev = tmp;
     tmp->m_next = created_node;
+    m_end = created_node;
     ++m_size;
 }
 
@@ -80,6 +84,7 @@ void linked_list <T>::push_front(const T& data) {
     
     if (m_start == nullptr) {
         m_start = created_node;
+        m_end = created_node; 
         ++m_size;
         return;
     }
@@ -98,6 +103,7 @@ void linked_list <T>::insert(int index, const T& data) {
 
     if (m_start == nullptr) {
         m_start = created_node;
+        m_end = created_node;
         ++m_size;
         return;
     }
@@ -168,6 +174,7 @@ void linked_list <T>::delete_node(int index) {
         (tmp->m_next)->m_prev = tmp->m_prev;
     }
     else if (tmp->m_prev != nullptr) {
+        m_end = tmp->m_prev;
         (tmp->m_prev)->m_next = tmp->m_next;
     }
     else if (tmp->m_next != nullptr) {
@@ -198,6 +205,20 @@ void linked_list <T>::print() const {
         ++i;
     }
     std::cout << "index: " << i << ", data: " << tmp->m_data << std::endl;
+}
+
+template <class T>
+void linked_list <T>::print_reverse() const {
+    if (m_size == 0) {
+        std::cout << "List is empty" << std::endl;
+        return;
+    }
+    node* tmp = m_end;
+    int i = m_size - 1;
+    for (; i >= 0; --i) {
+        std::cout << "index: " << i << ", data: " << tmp->m_data << std::endl;
+        tmp = tmp->m_prev;
+    }
 }
 
 template <class T>
