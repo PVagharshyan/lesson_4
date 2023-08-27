@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 template <class T>
@@ -9,7 +10,9 @@ public:
     linked_list();
     ~linked_list();
 
-    void insert_node(const T&);
+    void push_back(const T&);
+    void push_front(const T&);
+    void insert(int, const T&);
     void delete_node(int);
     void print() const;
     bool search(const T&) const;
@@ -51,7 +54,7 @@ linked_list <T>::~linked_list() {
 }
 
 template <class T>
-void linked_list <T>::insert_node(const T& data) {
+void linked_list <T>::push_back(const T& data) {
     node* created_node = new node{ data };
    
     if (m_start == nullptr) {
@@ -68,6 +71,60 @@ void linked_list <T>::insert_node(const T& data) {
     created_node->m_prev = tmp;
     tmp->m_next = created_node;
     ++m_size;
+}
+
+template <class T>
+void linked_list <T>::push_front(const T& data) {
+    node* created_node = new node{ data  };
+    
+    if (m_start == nullptr) {
+        m_start = created_node;
+        ++m_size;
+        return;
+    }
+    
+    created_node->m_next = m_start;
+    m_start->m_prev = created_node;
+    m_start = created_node;
+}
+
+template <class T>
+void linked_list <T>::insert(int index, const T& data) {
+    if (index < 0) {
+        throw std::runtime_error("Error: none valid index!");
+    }
+    node* created_node = new node{ data };
+
+    if (m_start == nullptr) {
+        m_start = created_node;
+        ++m_size;
+        return;
+    }
+
+    node* tmp = m_start;
+    for (int i = 0; i < m_size; ++i) {
+        if (i == index) {
+            if (tmp->m_prev != nullptr || (tmp->m_prev != nullptr && tmp->m_next != nullptr)){
+                node* next = tmp;
+                node* prev = tmp->m_prev;
+                next->m_prev = created_node;
+                prev->m_next = created_node;
+                created_node->m_next = next;
+                created_node->m_prev = prev;
+            }
+            else { 
+                node* next = tmp;
+                node* prev = nullptr;
+                next->m_prev = created_node;
+                created_node->m_next = next;
+                created_node->m_prev = prev;
+                m_start = created_node;
+            }
+            ++m_size;
+            break;
+        } 
+        tmp = tmp->m_next;
+    }
 }
 
 template <class T>
@@ -121,6 +178,7 @@ void linked_list <T>::print() const {
     while (tmp->m_next != nullptr) {
         std::cout << "index: " << i << ", data: " << tmp->m_data << std::endl;
         tmp = tmp->m_next;    
+        ++i;
     }
     std::cout << "index: " << i << ", data: " << tmp->m_data << std::endl;
 }

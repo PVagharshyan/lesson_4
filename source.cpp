@@ -7,12 +7,12 @@ int main() {
 
     //test
     
-    list.insert_node(10);
-    list.insert_node(12);
-    list.insert_node(13);
-    list.insert_node(15);
+    list.push_back(10);
+    list.push_back(12);
+    list.push_back(13);
+    list.push_back(15);
     list.print();
-    list_1.print();
-    
+    list.insert(3, 25);
+    list.print();
     return 0;
 }
