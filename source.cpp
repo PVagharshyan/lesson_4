@@ -12,7 +12,7 @@ int main() {
     list.push_back(13);
     list.push_back(15);
     list.print();
-    list.insert(3, 25);
+    list.insert(1, 25);
     list.print();
     return 0;
 }
